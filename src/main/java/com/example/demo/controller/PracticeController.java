@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,9 +48,10 @@ public class PracticeController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public ModelAndView createTaskPost(@ModelAttribute PracticeForm practiceForm,
-			ModelAndView mav,
+	public ModelAndView createTaskPost(
+			@Validated @ModelAttribute PracticeForm practiceForm,
 			BindingResult br,
+			ModelAndView mav,
 			RedirectAttributes ra) {
 
 		if (br.hasErrors()) {
@@ -64,18 +66,30 @@ public class PracticeController {
 
 		TR.save(task);
 
-		mav.setViewName("redilect:/");
+		mav.setViewName("redirect:/");
 		return mav;
 
 	}
 
+	@RequestMapping(value = "/complet")
 	public ModelAndView updateTask(@ModelAttribute PracticeForm form, ModelAndView mav) {
 
-		Task task = new Task();
-		task.setId(form.getId());
+		Task task = TR.findById(form.getId()).get();
+
 		task.setUpdate_date(new Date());
 		task.setIs_Done(1);
+
 		TR.save(task);
+
+		mav.setViewName("redirect:/");
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/delete")
+	public ModelAndView deleteTask(@ModelAttribute PracticeForm form, ModelAndView mav) {
+
+		TR.deleteById(form.getId());
 
 		mav.setViewName("redirect:/");
 		return mav;

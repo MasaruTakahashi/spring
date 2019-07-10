@@ -26,12 +26,12 @@
 				</thead>
 				<tbody>
 					<tr th:each="task : ${tasklist}">
-						<th scope="row">[[${task.id]]</th>
+						<th scope="row">[[${task.id}]]</th>
 						<td>[[${task.title}]]</td>
-						<td>[[${#dates.format(task.create_date, 'yyyy/mm/dd
-							hh:mm:ss')}]]</td>
+						<td>[[${#dates.format(task.create_date, 'yyyy/MM/dd
+							HH:mm:ss')}]]</td>
 						<td><span th:if="${task.is_Done == 1}">[[${#dates.format(task.update_date,
-								'yyyy/mm/dd hh:mm:ss')}]]</span></td>
+								'yyyy/MM/dd HH:mm:ss')}]]</span></td>
 						<td><a th:if="${task.is_Done == 0}" class="btn btn-success"
 							th:href="@{'complet?id=' + ${task.id}}">完了</a> <a
 							th:if="${task.is_Done == 1}" class="btn btn-danger"
@@ -40,8 +40,8 @@
 					<tr>
 						<th scope="row">#</th>
 						<td>
-						<input class="form-control" type="text" th:field="*{title}">
-						<span th:if="${#fields.hasErrors('*{title}')}" th:error="*{title}" class="text-danger"></span>
+						<input type="text" th:field="*{title}">
+							<span th:if="${#fields.hasErrors('*{title}')}" th:errors="*{title}" class="text-danger"></span>
 						</td>
 						<td></td>
 						<td></td>
